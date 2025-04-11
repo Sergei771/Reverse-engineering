@@ -1,0 +1,5 @@
+../Core/Src/Modules/timer_handler.c:49:6:Timer_Init	2
+../Core/Src/Modules/timer_handler.c:67:6:Timer_Start	6
+../Core/Src/Modules/timer_handler.c:113:6:Timer_Stop	6
+../Core/Src/Modules/timer_handler.c:153:6:Timer_IsActive	2
+../Core/Src/Modules/timer_handler.c:167:6:HAL_TIM_PeriodElapsedCallback	4

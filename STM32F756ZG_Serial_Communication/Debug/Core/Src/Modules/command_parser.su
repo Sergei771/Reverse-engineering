@@ -1,0 +1,11 @@
+../Core/Src/Modules/command_parser.c:79:6:Command_Parser_Init	8	static
+../Core/Src/Modules/command_parser.c:91:6:Command_Parser_ProcessChar	24	static
+../Core/Src/Modules/command_parser.c:146:6:Command_Parser_ProcessCommands	16	static
+../Core/Src/Modules/command_parser.c:212:13:Parse_LED_Command	72	static
+../Core/Src/Modules/command_parser.c:265:13:Parse_Chenillard_ON_Command	64	static
+../Core/Src/Modules/command_parser.c:301:13:Parse_Chenillard_Frequency_Command	80	static
+../Core/Src/Modules/command_parser.c:343:13:Parse_Shortcut_Command	72	static
+../Core/Src/Modules/command_parser.c:402:13:Execute_STOP_Command	8	static
+../Core/Src/Modules/command_parser.c:418:13:Execute_STATUS_Command	112	static
+../Core/Src/Modules/command_parser.c:451:13:Send_Success_Message	120	static
+../Core/Src/Modules/command_parser.c:467:13:Send_Error_Message	120	static

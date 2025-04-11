@@ -1,0 +1,5 @@
+../Core/Src/Modules/uart_handler.c:63:6:UART_Init	2
+../Core/Src/Modules/uart_handler.c:96:6:UART_SendString	1
+../Core/Src/Modules/uart_handler.c:113:6:HAL_UART_RxCpltCallback	3
+../Core/Src/Modules/uart_handler.c:149:6:UART_HasOverflow	1
+../Core/Src/Modules/uart_handler.c:166:6:UART_Reset	1

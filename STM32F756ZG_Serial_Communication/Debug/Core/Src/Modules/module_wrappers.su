@@ -1,0 +1,6 @@
+../Core/Src/Modules/module_wrappers.c:22:6:LED_Init	8	static
+../Core/Src/Modules/module_wrappers.c:30:6:PATTERN_Init	8	static
+../Core/Src/Modules/module_wrappers.c:38:6:TIMER_Init	8	static
+../Core/Src/Modules/module_wrappers.c:55:6:COMMAND_Init	8	static
+../Core/Src/Modules/module_wrappers.c:63:6:COMMAND_Process	8	static
+../Core/Src/Modules/module_wrappers.c:71:6:PATTERN_Process	8	static

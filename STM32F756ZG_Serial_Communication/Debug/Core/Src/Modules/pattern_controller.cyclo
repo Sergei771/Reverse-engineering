@@ -1,0 +1,12 @@
+../Core/Src/Modules/pattern_controller.c:53:6:Pattern_Controller_Init	1
+../Core/Src/Modules/pattern_controller.c:72:6:Pattern_Start	4
+../Core/Src/Modules/pattern_controller.c:108:6:Pattern_Stop	3
+../Core/Src/Modules/pattern_controller.c:143:6:Pattern_SetFrequency	3
+../Core/Src/Modules/pattern_controller.c:178:14:Pattern_GetActive	1
+../Core/Src/Modules/pattern_controller.c:189:19:Pattern_GetFrequency	1
+../Core/Src/Modules/pattern_controller.c:201:6:Pattern_IsActive	1
+../Core/Src/Modules/pattern_controller.c:216:6:Pattern_Controller_Update	7
+../Core/Src/Modules/pattern_controller.c:257:6:Pattern_TimerCallback	3
+../Core/Src/Modules/pattern_controller.c:276:13:Pattern1_Update	2
+../Core/Src/Modules/pattern_controller.c:300:13:Pattern2_Update	2
+../Core/Src/Modules/pattern_controller.c:335:13:Pattern3_Update	7
