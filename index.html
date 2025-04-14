@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet de Rétro-conception Électronique</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/source-code-pro@2.38.0/source-code-pro.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/inter-ui@3.19.3/inter.min.css">
+    <!-- Prism.js CSS (Okaidia Theme) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" integrity="sha512-mIs9kKbaw6JZFfSuo+MovjU+Ntggfoj8RwAmJbVXQ5mkAX5LlgETQEweFPI18humSPHymTb5iikEOKWF7I8ncQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            /* Palette de couleurs principale */
+            --primary: #8b0037;
+            --primary-light: #a1053f;
+            --primary-dark: #70002c;
+            --primary-transparent: rgba(139, 0, 55, 0.1);
+            --background: #161618;
+            --background-light: #1c1c1f;
+            --background-dark: #111113;
+            --card-bg: #23232a;
+            --text: #f8f8ff;
+            --text-muted: #c8c8d0;
+            --text-dim: #a0a0a8;
+            --border: #3a3a45;
+            --border-light: #484855;
+            --code-bg: #2b2b35;
+            --success: #35b653;
+            --warning: #e8b339;
+            --error: #e83939;
+            --info: #3995e8;
+            --glow: 0 0 15px rgba(139, 0, 55, 0.5);
+        }
+
+        /* Base styles */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--text);
+        }
+        
+        .title-bordeaux {
+            color: var(--primary-light);
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+
+        .title-bordeaux::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 40%;
+            height: 3px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .title-bordeaux:hover::after {
+            width: 100%;
+        }
+
+        /* Card and Section */
+        .elegant-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .elegant-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .section-title {
+            position: relative;
+            margin-bottom: 1.75rem;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+        }
+
+        /* Code blocks */
+        pre, code {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+            border-radius: 5px;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 1.25rem;
+            overflow-x: auto;
+            border-left: 3px solid var(--primary);
+            line-height: 1.5;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 0.125rem 0.375rem;
+            color: var(--text);
+        }
+
+        .code-highlight {
+            color: var(--primary-light);
+            font-weight: 600;
+        }
+
+        /* Definition box */
+        .definition-box {
+            background-color: var(--primary-transparent);
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .definition-box h4 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-light);
+        }
+        
+        /* Table styles */
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            background-color: var(--card-bg);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        thead {
+            background-color: var(--primary-dark);
+        }
+
+        th {
+            color: var(--text);
+            font-weight: 600;
+            text-align: left;
+            padding: 0.75rem 1rem;
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        /* LED Animations */
+        .led {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--code-bg);
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+            margin: 0 6px;
+        }
+
+        .led.on {
+            background-color: #ff3333;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.7), inset 0 0 7px rgba(255, 255, 255, 0.5);
+            filter: brightness(1.2); /* Léger éclat supplémentaire */
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes chenillard1 {
+            0%, 100% { background-color: #ff3333; box-shadow: 0 0 15px rgba(255, 51, 51, 0.7), inset 0 0 7px rgba(255, 255, 255, 0.5); }
+            33.33%, 66.66% { background-color: var(--code-bg); box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); }
+        }
+        
+        @keyframes chenillard2-odd {
+            0%, 49.99% { background-color: #ff3333; box-shadow: 0 0 15px rgba(255, 51, 51, 0.7), inset 0 0 7px rgba(255, 255, 255, 0.5); }
+            50%, 100% { background-color: var(--code-bg); box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); }
+        }
+        
+        @keyframes chenillard2-even {
+            0%, 49.99% { background-color: var(--code-bg); box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); }
+            50%, 100% { background-color: #ff3333; box-shadow: 0 0 15px rgba(255, 51, 51, 0.7), inset 0 0 7px rgba(255, 255, 255, 0.5); }
+        }
+        
+        @keyframes chenillard3-led1 {
+            0%, 16.66% { background-color: #ff3333; box-shadow: 0 0 15px rgba(255, 51, 51, 0.7), inset 0 0 7px rgba(255, 255, 255, 0.5); }
+            16.67%, 50% { background-color: #ff3333; box-shadow: 0 0 15px rgba(255, 51, 51, 0.7), inset 0 0 7px rgba(255, 255, 255, 0.5); }
+            50.01%, 100% { background-color: var(--code-bg); box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); }
+        }
+        
+        @keyframes chenillard3-led2 {
+            0%, 16.66% { background-color: var(--code-bg); box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); }
+            16.67%, 66.66% { background-color: #ff3333; box-shadow: 0 0 15px rgba(255, 51, 51, 0.7), inset 0 0 7px rgba(255, 255, 255, 0.5); }
+            66.67%, 100% { background-color: var(--code-bg); box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); }
+        }
+        
+        @keyframes chenillard3-led3 {
+            0%, 33.33% { background-color: var(--code-bg); box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); }
+            33.34%, 83.33% { background-color: #ff3333; box-shadow: 0 0 15px rgba(255, 51, 51, 0.7), inset 0 0 7px rgba(255, 255, 255, 0.5); }
+            83.34%, 100% { background-color: var(--code-bg); box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); }
+        }
+
+        /* Navigation */
+        .nav-link {
+            color: var(--text-muted);
+            padding: 0.5rem 0.75rem; /* Réduction du padding horizontal */
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .nav-link:hover, .nav-link:focus {
+            color: var(--text);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link.active {
+            color: var(--text);
+            background-color: var(--primary-dark);
+            box-shadow: 0 0 15px rgba(139, 0, 55, 0.15);
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--text);
+        }
+
+        .btn-primary:hover, .btn-primary:focus, .btn-primary.active {
+            background-color: var(--primary-light);
+            box-shadow: 0 0 15px rgba(139, 0, 55, 0.3);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-light);
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--primary);
+            color: var(--text);
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-to-top.visible {
+            opacity: 0.9;
+        }
+
+        .back-to-top:hover {
+            opacity: 1;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animation classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        /* Staggered animations */
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .section-title::before {
+                width: 60px;
+            }
+            
+            pre, code {
+                font-size: 0.85rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .nav-link {
+                margin-bottom: 0.5rem;
+                display: block;
+                text-align: center;
+            }
+
+            .elegant-card {
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        /* Reduce nav link font size on medium screens and up */
+        @media (min-width: 768px) {
+            .nav-link {
+                font-size: 0.875rem; /* Equivalent to text-sm */
+                padding-top: 0.6rem; /* Adjust padding slightly if needed */
+                padding-bottom: 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Non-sticky Header Part -->
+    <div class="pt-4 pb-2" style="background-color: var(--background);">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-col items-center"> <!-- Changement: flex-col et items-center -->
+                <!-- Bloc Titre Centré -->
+                <div class="flex items-center mb-2"> <!-- mb réduit -->
+                    <i class="fas fa-microchip text-2xl mr-3" style="color: var(--primary-light);"></i>
+                    <h1 class="text-xl md:text-2xl font-bold">Projet de Rétro-conception Électronique</h1>
+                </div>
+                
+                <!-- Bloc Noms & Date Centré -->
+                <div class="text-center mb-3"> 
+                    <p class="text-md">Broca Noa & Lotte Raphael</p>
+                    <p class="text-sm text-gray-400">Date du rendu: 11/04/2025</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Navigation Bar -->
+    <nav class="sticky top-0 z-40 w-full backdrop-filter backdrop-blur-lg bg-opacity-80 py-2 shadow-md" style="background-color: rgba(22, 22, 24, 0.85);">
+        <div class="container mx-auto px-4">
+            <ul class="nav-links flex flex-wrap justify-center space-x-1"> <!-- Justify-center toujours -->
+                <li><a href="#introduction" class="nav-link">Introduction</a></li>
+                <li><a href="#architecture" class="nav-link">Architecture</a></li>
+                <li><a href="#linux-app" class="nav-link">Application Linux</a></li>
+                <li><a href="#stm32" class="nav-link">STM32</a></li>
+                <li><a href="#communication" class="nav-link">Communication</a></li>
+                <li><a href="#chenillards" class="nav-link">Chenillards</a></li>
+                <li><a href="#commandes" class="nav-link">Commandes</a></li>
+                <li><a href="#module-led" class="nav-link">Module LED</a></li>
+                <li><a href="#conclusion" class="nav-link">Conclusion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Introduction -->
+        <section id="introduction" class="mb-16 fade-in">
+            <h2 class="text-3xl md:text-4xl mb-8 section-title">
+                <span class="title-bordeaux">Introduction</span>
+            </h2>
+            
+            <!-- Aperçu du Projet (Fonctionnalités Clés) -->
+            <div class="elegant-card p-6 mb-12 fade-in">
+                <h4 class="text-xl mb-6 title-bordeaux text-center">Fonctionnalités Clés du Projet</h4>
+ 
+                <!-- Grille pour les cartes de fonctionnalités -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Carte 1: Contrôle LEDs & Chenillards -->
+                    <a href="#chenillards" class="block p-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" style="background-color: rgba(var(--primary-rgb, 139, 0, 55), 0.1); border: 1px solid var(--primary-dark);">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-lightbulb text-2xl mr-3" style="color: var(--primary-light);"></i>
+                            <h5 class="font-semibold text-md">LEDs & Chenillards</h5>
+                        </div>
+                        <p class="text-sm text-gray-300">Contrôle individuel des LEDs et animations lumineuses (chenillards) avec gestion de la fréquence via Timers.</p>
+                    </a>
+
+                    <!-- Carte 2: Communication Série -->
+                    <a href="#communication" class="block p-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" style="background-color: rgba(57, 149, 232, 0.1); border: 1px solid var(--info);">
+                         <div class="flex items-center mb-3">
+                            <i class="fas fa-exchange-alt text-2xl mr-3" style="color: var(--info);"></i>
+                            <h5 class="font-semibold text-md">Dialogue Linux ↔ STM32</h5>
+                        </div>
+                        <p class="text-sm text-gray-300">Mise en place d'une communication UART bidirectionnelle robuste pour l'envoi de commandes et la réception de réponses.</p>
+                    </a>
+
+                     <!-- Carte 3: Interface Console -->
+                    <a href="#linux-app" class="block p-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" style="background-color: rgba(53, 182, 83, 0.1); border: 1px solid var(--success);">
+                         <div class="flex items-center mb-3">
+                            <i class="fas fa-terminal text-2xl mr-3" style="color: var(--success);"></i>
+                            <h5 class="font-semibold text-md">Console de Contrôle</h5>
+                        </div>
+                        <p class="text-sm text-gray-300">Application C sous Linux pour la saisie utilisateur, la validation des commandes et l'interaction avec le port série.</p>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <ul class="list-disc pl-5 space-y-3 mb-8"> <!-- Increased spacing -->
+                    <li>Ce projet s'inscrit dans le cadre de l'UE de <span class="code-highlight">Reverse Engineering</span>, axé sur la compréhension pratique des systèmes électroniques.</li>
+                    <li>L'objectif principal était de mettre en œuvre une <span class="code-highlight">communication série bidirectionnelle</span> entre un PC (Linux) et un microcontrôleur <span class="code-highlight">STM32F756ZG</span>.</li>
+                    <li>L'application Linux développée permet le <span class="code-highlight">contrôle à distance</span> des périphériques du STM32 via des commandes textuelles.</li>
+                    <li>Les fonctionnalités implémentées incluent le contrôle individuel de <span class="code-highlight">LEDs</span> et la gestion de <span class="code-highlight">chenillards</span> animés à différentes vitesses.</li>
+                    <li>Le développement a nécessité la manipulation directe des périphériques <span class="code-highlight">GPIO</span>, <span class="code-highlight">Timers</span>, et <span class="code-highlight">UART</span> via la programmation C embarquée et la bibliothèque HAL.</li>
+                </ul>
+                
+                <div class="definition-box fade-in stagger-1">
+                    <h4 class="text-lg"><i class="fas fa-book-open mr-2"></i>Contexte Pédagogique</h4> <!-- Changed Icon & Title -->
+                    <p class="mb-2">
+                        Guidés par un cahier des charges, ce projet visait l'application pratique des concepts d'électronique et de programmation C embarquée sur un microcontrôleur <span class="code-highlight">STM32F756ZG</span>. Les compétences clés à développer étaient :
+                     </p>
+                      <ul class="list-disc pl-5 text-sm space-y-1">
+                          <li>Gestion des entrées/sorties (GPIO) pour le contrôle de LEDs.</li>
+                          <li>Utilisation des Timers pour créer des séquences temporelles (chenillards).</li>
+                          <li>Mise en place d'une communication série (UART) pour dialoguer avec un système externe (PC Linux).</li>
+                          <li>Utilisation de l'environnement de développement STM32 (CubeMX, CubeIDE, HAL).</li>
+                      </ul>
+                      <p class="mt-3">
+                          L'accent était mis sur la compréhension du fonctionnement bas niveau et la structuration du code (firmware et application Linux).
+                      </p>
+                 </div>
+             </div>
+             
+             <div class="elegant-card p-6 fade-in stagger-2">
+                <h3 class="text-xl md:text-2xl mb-4 title-bordeaux">STM32F756ZG</h3>
+                <p class="mb-3">
+                    Le STM32F756ZG est un microcontrôleur ARM 32 bits haute performance avec de nombreux périphériques intégrés :
+                </p>
+                <ul class="list-disc pl-6 space-y-1">
+                    <li>Cœur ARM Cortex-M7 cadencé jusqu'à 216 MHz</li>
+                    <li>Mémoire Flash de 1 Mo</li>
+                    <li>RAM de 320 Ko</li>
+                    <li>Interfaces de communication multiples (UART, SPI, I2C, etc.)</li>
+                    <li>Périphériques de temporisation avancés (timers)</li>
+                    <li>Nombreux GPIO configurables</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Architecture -->
+        <section id="architecture" class="mb-16 fade-in">
+            <h2 class="text-3xl md:text-4xl mb-8 section-title">
+                <span class="title-bordeaux">Architecture du système</span>
+            </h2>
+            
+            <h3 class="text-2xl mb-4">Vue d'ensemble</h3>
+            <p class="mb-6">
+                Le système est composé de deux acteurs principaux qui dialoguent via une liaison série <abbr title="Universal Asynchronous Receiver/Transmitter : Standard de communication série simple et très répandu">UART</abbr> : 
+                l'ordinateur sous <strong>Linux</strong> et le <strong>microcontrôleur STM32</strong>.
+            </p>
+
+            <!-- Diagramme d'Architecture (Image) -->
+            <div class="elegant-card p-6 mb-10 fade-in stagger-0 text-center">
+                <h4 class="text-xl mb-2">Diagramme de l'Architecture</h4>
+                <img src="1.jpg" alt="Diagramme montrant un PC Linux connecté via USB à une carte STM32, elle-même reliée à 3 LEDs" class="mx-auto my-4 rounded-md shadow-md" style="max-width: 90%; height: auto; border: 1px solid var(--border);">
+                <p class="mt-3 text-gray-300">Ce schéma illustre l'interaction matérielle entre l'ordinateur et le microcontrôleur qui pilote les LEDs.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div class="elegant-card p-6 fade-in stagger-1">
+                    <h4 class="text-xl mb-3 title-bordeaux flex items-center">
+                        <i class="fab fa-linux mr-3" aria-hidden="true"></i>
+                        <strong>Application Linux</strong> (Le Centre de Contrôle)
+                    </h4>
+                    <ul class="list-disc pl-6 space-y-1">
+                        <li>Interface utilisateur simple en <strong>ligne de commande</strong></li>
+                        <li>Communication série via un <strong>port TTY</strong> (ex: `/dev/ttyACM0`)</li>
+                        <li><strong>Validation</strong> et formatage des commandes envoyées</li>
+                        <li>Gestion de commandes spéciales (<code>help</code>, <code>clear</code>, <code>quit</code>)</li>
+                    </ul>
+                </div>
+                
+                <div class="elegant-card p-6 fade-in stagger-2">
+                    <h4 class="text-xl mb-3 title-bordeaux flex items-center">
+                        <i class="fas fa-microchip mr-3" aria-hidden="true"></i>
+                        <strong>Microcontrôleur STM32</strong> (L'Exécutant)
+                    </h4>
+                    <ul class="list-disc pl-6 space-y-1">
+                        <li>Contrôle direct des <strong>LED</strong> individuelles (allumer/éteindre)</li>
+                        <li>Gestion des <strong>chenillards</strong> (patterns lumineux animés)</li>
+                        <li>Utilisation des <strong>timers</strong> pour contrôler la vitesse des animations</li>
+                        <li>Interface <strong>UART</strong> pour recevoir les ordres et envoyer des réponses</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="text-2xl mb-4">Flux de communication typique</h3>
+            <div class="elegant-card p-6 mb-10 fade-in stagger-3">
+                 <p class="mb-3">Le flux de communication textuel entre les deux composants suit ce schéma :</p>
+                 <ol class="list-decimal pl-6 space-y-1">
+                    <li>L'utilisateur entre une commande dans l'application Linux.</li>
+                    <li>L'application <strong>valide le format</strong> de la commande (est-elle connue ?).</li>
+                    <li>La commande est envoyée au microcontrôleur via le port série <strong>UART</strong>.</li>
+                    <li>Le microcontrôleur reçoit la commande (souvent via une <strong>interruption</strong>).</li>
+                    <li>Il analyse la commande et <strong>exécute l'action</strong> correspondante (ex: allumer une LED).</li>
+                    <li>Le microcontrôleur prépare et <strong>envoie une réponse</strong> (ex: "OK" ou "Erreur") à l'application Linux.</li>
+                    <li>L'application Linux reçoit et <strong>affiche la réponse</strong> à l'utilisateur.</li>
+                </ol>
+            </div>
+            
+            <h3 class="text-2xl mb-4">Modules logiciels (Organisation du code)</h3>
+            <p class="mb-2">Pour organiser le code, nous l'avons divisé en modules spécialisés :</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 fade-in stagger-4">
+                <div class="elegant-card p-4">
+                    <h4 class="text-lg title-bordeaux mb-2">Module LED</h4>
+                    <p>Contrôle des LED (<code>led_controller.c</code>)</p>
+                </div>
+                <div class="elegant-card p-4">
+                    <h4 class="text-lg title-bordeaux mb-2">Module Pattern</h4>
+                    <p>Gestion des chenillards (<code>pattern_controller.c</code>)</p>
+                </div>
+                <div class="elegant-card p-4">
+                    <h4 class="text-lg title-bordeaux mb-2">Module Timer</h4>
+                    <p>Gestion des fréquences (<code>timer_handler.c</code>)</p>
+                </div>
+                <div class="elegant-card p-4">
+                    <h4 class="text-lg title-bordeaux mb-2">Module UART</h4>
+                    <p>Communication série (<code>uart_handler.c</code> / <code>serial_handler.c</code>)</p>
+                </div>
+                <div class="elegant-card p-4">
+                    <h4 class="text-lg title-bordeaux mb-2">Module Commande</h4>
+                    <p>Analyse des commandes (<code>command_parser.c</code> / <code>command_validator.c</code>)</p>
+                </div>
+                <div class="elegant-card p-4">
+                    <h4 class="text-lg title-bordeaux mb-2">Interface Linux</h4>
+                    <p>Affichage et saisie (<code>ui_handler.c</code>, <code>main.c</code>)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Application Linux -->
+        <section id="linux-app" class="mb-16 fade-in">
+            <h2 class="text-3xl md:text-4xl mb-8 section-title">
+                <span class="title-bordeaux">Application Linux (Le Centre de Contrôle)</span>
+            </h2>
+            
+            <div class="definition-box mb-8 fade-in stagger-1">
+                <h4 class="text-lg"><i class="fas fa-terminal mr-2"></i>Approche Côté Linux</h4>
+                <p>
+                    Pour l'application Linux, notre travail de rétro-conception a consisté à comprendre comment envoyer des commandes correctement formatées au STM32 et comment interpréter ses réponses. 
+                    Nous avons développé une <strong>interface console</strong> (en ligne de commande) qui permet à l'utilisateur de dialoguer avec le microcontrôleur via le port série. 
+                    L'architecture modulaire sépare la gestion de la <strong>communication série</strong>, la <strong>validation des commandes</strong> et l'<strong>interface utilisateur</strong>.
+                </p>
+            </div>
+            
+            <h3 class="text-2xl mb-4">Structure du code (Modules Principaux)</h3>
+            <p class="mb-6">
+                L'application Linux est organisée en fichiers C distincts pour plus de clarté :
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div class="elegant-card p-6 fade-in stagger-2">
+                    <h4 class="text-xl mb-3 title-bordeaux"><code>main.c</code></h4>
+                    <p><strong>Cœur de l'application</strong> : boucle principale, initialisation, orchestration des autres modules.</p>
+                </div>
+                <div class="elegant-card p-6 fade-in stagger-2">
+                    <h4 class="text-xl mb-3 title-bordeaux"><code>serial_handler.c</code></h4>
+                    <p>Gestion de la <strong>communication série</strong> avec le microcontrôleur (ouverture du port, envoi/réception).</p>
+                    <div class="mt-2 p-3 rounded-md" style="background-color: var(--primary-transparent);">
+                        <p class="text-sm mb-0"><strong>Baudrate</strong> : Vitesse de communication (115200 bits/seconde). Les deux appareils doivent utiliser la même vitesse pour se comprendre !</p>
+                    </div>
+                </div>
+                <div class="elegant-card p-6 fade-in stagger-3">
+                    <h4 class="text-xl mb-3 title-bordeaux"><code>command_validator.c</code></h4>
+                    <p><strong>Vérification des commandes</strong> saisies par l'utilisateur avant l'envoi.</p>
+                </div>
+                <div class="elegant-card p-6 fade-in stagger-3">
+                    <h4 class="text-xl mb-3 title-bordeaux"><code>ui_handler.c</code></h4>
+                    <p>Gestion de l'<strong>interface utilisateur</strong> (affichage des messages, du prompt, lecture de la saisie).</p>
+                </div>
+                <div class="elegant-card p-6 fade-in stagger-4" style="grid-column: span 2;">
+                    <h4 class="text-xl mb-3 title-bordeaux"><code>special_commands.c</code></h4>
+                    <p>Traitement des commandes "spéciales" qui ne sont pas envoyées au STM32 (<code>help</code>, <code>clear</code>, <code>quit</code>).</p>
+                </div>
+            </div>
+            
+            <!-- Instructions de Compilation et Exécution -->
+            <div class="elegant-card p-6 mb-10 fade-in stagger-5">
+                <h4 class="text-xl mb-4 title-bordeaux flex items-center">
+                    <i class="fas fa-terminal mr-3" aria-hidden="true"></i>
+                    Comment Lancer l'Application Linux
+                </h4>
+                <p class="mb-4">Pour compiler et exécuter l'application de contrôle sur votre système Linux :</p>
+                <ol class="list-decimal list-inside space-y-3">
+                    <li>
+                        <strong>Compilation :</strong>
+                        <p class="text-sm text-gray-400 mb-1">Placez-vous dans le répertoire contenant le code source et le Makefile, puis exécutez :</p>
+                        <pre><code class="language-bash">make</code></pre>
+                        <p class="text-sm text-gray-400 mt-1">Cela va générer l'exécutable (par exemple, <code>stm32_console</code>).</p>
+                    </li>
+                    <li>
+                        <strong>Exécution :</strong>
+                        <p class="text-sm text-gray-400 mb-1">Lancez l'exécutable compilé. Vous pouvez spécifier le port série en argument (facultatif, défaut: <code>/dev/ttyACM0</code>) :</p>
+                        <pre><code class="language-bash">./stm32_console [port_série]</code></pre>
+                        <p class="text-sm text-gray-400 mt-1">Exemple : <code>./stm32_console /dev/ttyACM1</code></p>
+                    </li>
+                </ol>
+                 <p class="mt-4 text-sm text-gray-400">Assurez-vous que la carte STM32 est connectée et que vous avez les permissions nécessaires pour accéder au port série.</p>
+            </div>
+             
+            <h3 class="text-2xl mb-4">Point d'entrée principal (<code>main.c</code>)</h3>
+            <p class="mb-4">
+                Le fichier <code>main.c</code> constitue le point d'entrée de l'application. Il contient la boucle principale 
+                qui traite les commandes utilisateur et gère la communication avec le microcontrôleur.
+            </p>
+            
+            <pre class="mb-6 fade-in stagger-5">
+<code class="language-c">
+int main(int argc, char *argv[]) {
+    char command[MAX_COMMAND_LENGTH];
+    bool running = true;
+    char *port = "/dev/ttyACM0"; // Port série par défaut
+    
+    // Traitement des arguments de ligne de commande
+    if (argc > 1) {
+        port = argv[1];
+    }
+    
+    // Initialisation des modules
+    initialize();
+    
+    // Ouverture du port série
+    if (!Serial_Open(port)) {
+        UI_DisplayError("Impossible d'ouvrir le port série");
+        return EXIT_FAILURE;
+    }
+    
+    // Affichage du message de bienvenue et des commandes disponibles
+    UI_DisplayWelcome();
+    UI_DisplayHelp();
+    
+    // Boucle principale
+    while (running) {
+        // Affichage du prompt et lecture de la commande
+        UI_DisplayPrompt();
+        if (UI_ReadCommand(command, MAX_COMMAND_LENGTH)) {
+            // Traitement des commandes spéciales
+            if (Special_IsSpecialCommand(command)) {
+                if (Special_ProcessCommand(command) == SPECIAL_CMD_QUIT) {
+                    running = false;
+                }
+                continue;
+            }
+            
+            // Validation de la commande
+            if (Command_Validate(command)) {
+                // Envoi de la commande au microcontrôleur
+                if (Serial_SendCommand(command)) {
+                    // Attente et affichage de la réponse
+                    char response[256];
+                    if (Serial_ReceiveResponse(response, sizeof(response))) {
+                        UI_DisplayResponse(response);
+                    } else {
+                        UI_DisplayError("Pas de réponse du microcontrôleur");
+                    }
+                } else {
+                    UI_DisplayError("Erreur lors de l'envoi de la commande");
+                }
+            } else {
+                UI_DisplayError("Commande invalide");
+            }
+        }
+    }
+    
+    // Nettoyage avant de quitter
+    cleanup();
+    
+    return EXIT_SUCCESS;
+}</code></pre>
+            
+            <h4 class="text-xl mb-3">Explication détaillée :</h4>
+            <ul class="list-disc pl-6 mb-10 space-y-3"> <!-- Increased spacing -->
+                <li><span class="code-highlight">Variables Initiales :</span> Déclaration du buffer <code>command</code> pour stocker la saisie utilisateur, du booléen <code>running</code> pour contrôler la boucle, et du <code>port</code> série (avec une valeur par défaut).</li>
+                <li><span class="code-highlight">Arguments Ligne de Commande (<code>argc</code>, <code>argv</code>) :</span> Si un argument est fourni au lancement (ex: <code>./stm32_console /dev/ttyACM1</code>), il est utilisé comme nom de port série, sinon le port par défaut est conservé.</li>
+                <li><span class="code-highlight">Initialisation Générale (<code>initialize()</code>) :</span> Appel d'une fonction (supposée) qui initialise les différents modules (interface utilisateur, gestionnaire série, etc.).</li>
+                <li><span class="code-highlight">Ouverture Port Série (<code>Serial_Open(port)</code>) :</span> Tente d'ouvrir et de configurer le port série spécifié. En cas d'échec (retour <code>false</code>), affiche une erreur (<code>UI_DisplayError</code>) et quitte (<code>EXIT_FAILURE</code>).</li>
+                <li><span class="code-highlight">Messages de Bienvenue (<code>UI_DisplayWelcome</code>, <code>UI_DisplayHelp</code>) :</span> Affiche un message d'accueil et l'aide initiale des commandes via le module UI.</li>
+                <li><span class="code-highlight">Boucle Principale (<code>while (running)</code>) :</span> Continue tant que l'utilisateur n'a pas demandé à quitter.
+                    <ul class="list-circle pl-6 mt-2 space-y-2"> <!-- Nested list with spacing -->
+                        <li><span class="code-highlight">Affichage Prompt et Lecture (<code>UI_DisplayPrompt</code>, <code>UI_ReadCommand</code>) :</span> Affiche l'invite de commande (ex: <code>STM32&gt; </code>) et lit la saisie de l'utilisateur dans le buffer <code>command</code>.</li>
+                        <li><span class="code-highlight">Commandes Spéciales (<code>Special_IsSpecialCommand</code>, <code>Special_ProcessCommand</code>) :</span> Vérifie si la commande est locale (ex: <code>quit</code>, <code>clear</code>, <code>help</code>). Si oui, la traite. Si c'est <code>quit</code>, met <code>running</code> à <code>false</code> pour sortir de la boucle. Le <code>continue</code> passe directement à l'itération suivante.</li>
+                        <li><span class="code-highlight">Validation (<code>Command_Validate(command)</code>) :</span> Si ce n'est pas une commande spéciale, vérifie si le format de la commande est valide pour être envoyé au STM32.</li>
+                        <li><span class="code-highlight">Envoi Série (<code>Serial_SendCommand(command)</code>) :</span> Si la commande est valide, tente de l'envoyer via le port série. Gère l'erreur d'envoi.</li>
+                        <li><span class="code-highlight">Réception Réponse (<code>Serial_ReceiveResponse</code>, <code>UI_DisplayResponse</code>) :</span> Si l'envoi réussit, attend une réponse du STM32 (avec un timeout interne). Si une réponse est reçue, l'affiche. Gère l'erreur si aucune réponse n'est reçue.</li>
+                        <li><span class="code-highlight">Gestion Erreur Commande Invalide :</span> Si <code>Command_Validate</code> retourne <code>false</code>, affiche un message d'erreur via <code>UI_DisplayError</code>.</li>
+                    </ul>
+                </li>
+                <li><span class="code-highlight">Nettoyage (<code>cleanup()</code>) :</span> Avant de terminer le programme (après la sortie de boucle), appelle une fonction pour libérer les ressources (ex: fermer le port série).</li>
+                <li><span class="code-highlight">Code de Sortie (<code>EXIT_SUCCESS</code>) :</span> Retourne 0 pour indiquer que le programme s'est terminé normalement.</li>
+            </ul>
+            
+            <h3 class="text-2xl mb-4">Communication série (<code>serial_handler.c</code>)</h3>
+            <p class="mb-4">
+                Le module de communication série est crucial. Il gère l'ouverture, la configuration du port série (comme `/dev/ttyACM0` sous Linux) 
+                et l'échange de données avec le microcontrôleur. Voici un aperçu de la fonction de réception :
+            </p>
+            
+            <pre class="mb-6 fade-in stagger-6">
+<code class="language-c">
+bool Serial_ReceiveResponse(char *response, size_t size) {
+    if (serialFd < 0 || response == NULL || size == 0) {
+        return false;
+    }
+
+    memset(response, 0, size);
+    size_t totalBytesRead = 0;
+    ssize_t bytesReadNow = 0;
+    fd_set readfds;
+    struct timeval timeout;
+    bool keepReading = true;
+
+    while (keepReading && totalBytesRead < size - 1) {
+        FD_ZERO(&readfds);
+        FD_SET(serialFd, &readfds);
+
+        // Timeout court pour détecter la fin de transmission
+        timeout.tv_sec = 0;
+        timeout.tv_usec = 50 * 1000; // 50 ms
+
+        int selectResult = select(serialFd + 1, &readfds, NULL, NULL, &timeout);
+
+        if (selectResult < 0) { // Erreur select
+            perror("Erreur select() en lecture série");
+            return false;
+        } else if (selectResult == 0) { // Timeout -> fin de réponse
+            keepReading = false;
+        } else { // Données disponibles
+            bytesReadNow = read(serialFd, response + totalBytesRead, size - 1 - totalBytesRead);
+
+            if (bytesReadNow < 0) { // Erreur lecture
+                if (errno == EAGAIN || errno == EWOULDBLOCK) {
+                    keepReading = false;
+                } else {
+                    perror("Erreur read() en lecture série");
+                    return false;
+                }
+            } else if (bytesReadNow == 0) { // EOF (port fermé?)
+                keepReading = false;
+            } else { // Données lues
+                totalBytesRead += bytesReadNow;
+            }
+        }
+    }
+
+    // Assurer la terminaison nulle
+    response[totalBytesRead] = '\0';
+
+    // Nettoyer les \r ou \n finaux
+    while (totalBytesRead > 0 && (response[totalBytesRead - 1] == '\n' || response[totalBytesRead - 1] == '\r')) {
+        response[--totalBytesRead] = '\0';
+    }
+
+    return (totalBytesRead > 0);
+}</code></pre>
+            
+            <h4 class="text-xl mb-3">Points clés de l'implémentation :</h4>
+            <ul class="list-disc pl-6 mb-10 space-y-3"> <!-- Increased spacing -->
+                <li><span class="code-highlight">Vérifications Initiales :</span> S'assure que le descripteur de fichier série (<code>serialFd</code>) est valide, que le pointeur <code>response</code> n'est pas <code>NULL</code>, et que la taille <code>size</code> est supérieure à 0.</li>
+                <li><span class="code-highlight">Initialisation Buffer (<code>memset</code>) :</span> Met à zéro le buffer de réception <code>response</code> pour éviter les données résiduelles.</li>
+                <li><span class="code-highlight">Boucle de Lecture (<code>while (keepReading && ...)</code>):</span> Continue tant qu'on pense qu'il y a potentiellement des données à lire (<code>keepReading</code>) et que le buffer n'est pas plein (<code>totalBytesRead < size - 1</code>).</li>
+                <li><span class="code-highlight">Préparation <code>select()</code> (<code>FD_ZERO</code>, <code>FD_SET</code>) :</span> Initialise un ensemble de descripteurs (<code>readfds</code>) et y ajoute le descripteur du port série (<code>serialFd</code>). C'est ce descripteur que <code>select()</code> va surveiller.</li>
+                <li><span class="code-highlight">Configuration Timeout (<code>struct timeval timeout</code>) :</span> Définit une courte durée (50 millisecondes ici) pendant laquelle <code>select()</code> attendra des données.</li>
+                <li><span class="code-highlight">Appel <code>select()</code> :</span> Surveille <code>serialFd</code>. <code>select()</code> bloque l'exécution pendant au maximum la durée du <code>timeout</code>.
+                    <ul class="list-circle pl-6 mt-2 space-y-2"> <!-- Nested list -->
+                        <li>Retour <code>&lt; 0</code> : Une erreur s'est produite durant <code>select()</code>.</li>
+                        <li>Retour <code>== 0</code> : Le timeout a expiré sans qu'aucune donnée n'arrive sur <code>serialFd</code>. On suppose que le STM32 a fini d'émettre, donc <code>keepReading</code> passe à <code>false</code> pour sortir de la boucle <code>while</code>.</li>
+                        <li>Retour <code>&gt; 0</code> : Des données sont prêtes à être lues sur <code>serialFd</code>.</li>
+                    </ul>
+                </li>
+                <li><span class="code-highlight">Lecture (<code>read()</code>) :</span> Si <code>select()</code> a indiqué que des données sont disponibles, tente de lire jusqu'à <code>size - 1 - totalBytesRead</code> octets depuis <code>serialFd</code> et les place dans le buffer <code>response</code> à la suite des données déjà lues.</li>
+                <li><span class="code-highlight">Gestion Erreurs <code>read()</code> :</span>
+                    <ul class="list-circle pl-6 mt-2 space-y-2"> <!-- Nested list -->
+                        <li>Retour <code>&lt; 0</code> : Erreur de lecture. Si l'erreur est <code>EAGAIN</code> ou <code>EWOULDBLOCK</code> (signifiant temporairement indisponible), on arrête de lire (<code>keepReading = false</code>). Sinon (autre erreur), on retourne <code>false</code>.</li>
+                        <li>Retour <code>== 0</code> : Fin de fichier (peut arriver si le port est fermé brutalement). On arrête de lire.</li>
+                        <li>Retour <code>&gt; 0</code> : <code>bytesReadNow</code> octets ont été lus avec succès. On ajoute ce nombre au compteur <code>totalBytesRead</code>.</li>
+                    </ul>
+                </li>
+                <li><span class="code-highlight">Terminaison Nulle (<code>response[totalBytesRead] = '\0'</code>) :</span> Ajoute le caractère nul C à la fin des données lues pour former une chaîne de caractères valide.</li>
+                <li><span class="code-highlight">Nettoyage Fin de Ligne :</span> Parcourt la chaîne reçue à reculons et remplace les éventuels caractères <code>\n</code> ou <code>\r</code> finaux par <code>\0</code> pour obtenir une chaîne propre.</li>
+                <li><span class="code-highlight">Retour (<code>return (totalBytesRead > 0)</code>) :</span> Retourne <code>true</code> si au moins un octet a été lu, <code>false</code> sinon.</li>
+            </ul>
+            
+            <h3 class="text-2xl mb-4">Validation des commandes (<code>command_validator.c</code>)</h3>
+            <p class="mb-4">
+                Avant d'envoyer une commande au microcontrôleur, ce module vérifie si elle respecte un format attendu. 
+                Cela évite d'envoyer n'importe quoi au STM32.
+            </p>
+            
+            <pre class="mb-6 fade-in stagger-7">
+<code class="language-c">
+bool Command_Validate(const char *command) {
+    if (command == NULL || strlen(command) == 0) {
+        return false;
+    }
+
+    // Copie pour manipulation (et mise en majuscule)
+    char upperCommand[128];
+    size_t len = 0;
+    while (command[len] != '\0' && len < sizeof(upperCommand) - 1) {
+        upperCommand[len] = toupper((unsigned char)command[len]);
+        len++;
+    }
+    upperCommand[len] = '\0';
+
+    // Commandes simples
+    if (strcmp(upperCommand, "HELP") == 0) return true;
+    if (strcmp(upperCommand, "STATUS") == 0) return true;
+    if (strcmp(upperCommand, "STOP") == 0) return true;
+    if (strcmp(upperCommand, "CLEAR") == 0) return true;
+    if (strcmp(upperCommand, "QUIT") == 0) return true;
+
+    // Commandes LED
+    if (strncmp(upperCommand, "LED", 3) == 0) {
+        if (len >= 6 && 
+            isdigit((unsigned char)upperCommand[3]) &&
+            upperCommand[4] == ' ' &&
+            (strcmp(upperCommand + 5, "ON") == 0 || strcmp(upperCommand + 5, "OFF") == 0))
+        {
+            return true; // Format LED valide
+        }
+    }
+
+    // Commandes chenillard
+    if (strncmp(upperCommand, "CHENILLARD", 10) == 0) {
+        const char* args = upperCommand + 10;
+        
+        if (strlen(args) >= 4 && 
+            isdigit((unsigned char)args[0]) &&
+            strcmp(args + 1, " ON") == 0)
+        {
+            return true;
+        }
+        
+        if (strncmp(args, " FREQUENCE", 10) == 0 &&
+            strlen(args) == 11 && 
+            isdigit((unsigned char)args[10]))
+        {
+             return true;
+        }
+    }
+
+    // Raccourcis
+    if (strncmp(upperCommand, "PAT", 3) == 0) {
+        if (len == 4 && isdigit((unsigned char)upperCommand[3])) return true;
+    }
+    if (strncmp(upperCommand, "FREQ", 4) == 0) {
+        if (len == 5 && isdigit((unsigned char)upperCommand[4])) return true;
+    }
+
+    // Aucun format reconnu
+    return false;
+}</code></pre>
+            
+            <h4 class="text-xl mb-3">Caractéristiques de la validation :</h4>
+            <ul class="list-disc pl-6 mb-4 space-y-3"> <!-- Increased spacing -->
+                <li><span class="code-highlight">Vérification Initiale :</span> Refuse les commandes <code>NULL</code> ou vides.</li>
+                <li><span class="code-highlight">Copie et Majuscules (<code>upperCommand</code>, <code>toupper</code>) :</span> Crée une copie de la commande en majuscules pour rendre la validation insensible à la casse (ex: <code>led1 on</code> sera traité comme <code>LED1 ON</code>).</li>
+                <li><span class="code-highlight">Commandes Simples (<code>strcmp</code>) :</span> Vérifie par comparaison exacte si la commande correspond à <code>HELP</code>, <code>STATUS</code>, <code>STOP</code>, <code>CLEAR</code> ou <code>QUIT</code>.</li>
+                <li><span class="code-highlight">Validation Commande LED (<code>strncmp</code>, <code>isdigit</code>, etc.) :</span>
+                    <ul class="list-circle pl-6 mt-2 space-y-2"> <!-- Nested list -->
+                        <li>Vérifie si la commande commence par "LED" (<code>strncmp</code>).</li>
+                        <li>Vérifie si la longueur est suffisante (<code>len >= 6</code>).</li>
+                        <li>Vérifie si le 4ème caractère est un chiffre (<code>isdigit(upperCommand[3])</code>).</li>
+                        <li>Vérifie si le 5ème caractère est un espace (<code>upperCommand[4] == ' '</code>).</li>
+                        <li>Vérifie si la fin est "ON" ou "OFF" (<code>strcmp(upperCommand + 5, ...)</code>).</li>
+                    </ul>
+                </li>
+                <li><span class="code-highlight">Validation Commande Chenillard (<code>strncmp</code>, <code>isdigit</code>, etc.) :</span>
+                     <ul class="list-circle pl-6 mt-2 space-y-2"> <!-- Nested list -->
+                        <li>Vérifie si la commande commence par "CHENILLARD" (<code>strncmp</code>).</li>
+                        <li>Extrait les arguments (<code>args = upperCommand + 10</code>).</li>
+                        <li><span class="code-highlight">Format <code>CHENILLARD&lt;n&gt; ON</code> :</span> Vérifie la longueur, si le premier argument est un chiffre, et si la suite est " ON".</li>
+                        <li><span class="code-highlight">Format <code>CHENILLARD FREQUENCE&lt;n&gt;</code> :</span> Vérifie si les arguments commencent par " FREQUENCE", si la longueur totale est correcte, et si le dernier caractère est un chiffre.</li>
+                     </ul>
+                </li>
+                <li><span class="code-highlight">Validation Raccourcis (<code>PAT</code>, <code>FREQ</code>) :</span> Vérifie si la commande commence par "PAT" ou "FREQ", si la longueur est correcte (4 ou 5), et si le dernier caractère est un chiffre.</li>
+                <li><span class="code-highlight">Retour <code>false</code> par Défaut :</span> Si aucun des formats précédents n'a été reconnu, la commande est considérée comme invalide.</li>
+            </ul>
+        </section>
+
+        <!-- Microcontrôleur STM32 -->
+        <section id="stm32" class="mb-16 fade-in">
+            <h2 class="text-3xl md:text-4xl mb-8 section-title">
+                <span class="title-bordeaux">Microcontrôleur STM32 (L'Exécutant)</span>
+            </h2>
+            
+            <div class="definition-box mb-8 fade-in stagger-1">
+                <h4 class="text-lg"><i class="fas fa-cogs mr-2"></i>Approche Côté STM32</h4>
+                <p>
+                    Pour le microcontrôleur, la rétro-conception a impliqué de comprendre comment configurer et utiliser ses **périphériques matériels** 
+                    (GPIO pour les LEDs, Timers pour le rythme, UART pour communiquer) en utilisant la bibliothèque <strong>HAL</strong> (Hardware Abstraction Layer - une couche logicielle fournie par le fabricant pour simplifier l'accès au matériel). 
+                    Nous avons reconstitué (ou conçu) un <strong>firmware</strong> (le logiciel embarqué) modulaire qui réagit aux commandes reçues via UART et contrôle les LEDs en conséquence. 
+                    Une partie clé est l'utilisation des <strong>interruptions</strong> : le microcontrôleur peut continuer ses tâches et ne traiter la communication série ou le changement de rythme des LEDs que lorsque c'est nécessaire.
+                </p>
+            </div>
+
+            <h3 class="text-2xl mb-4">Architecture logicielle (Firmware)</h3>
+            <p class="mb-6">
+                Le code tournant sur le STM32 est également divisé en modules :
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div class="elegant-card p-6 fade-in stagger-2">
+                    <h4 class="text-xl mb-3 title-bordeaux"><code>command_parser.c</code></h4>
+                    <p>Analyse (parsing) et interprétation des <strong>commandes reçues</strong> via UART.</p>
+                </div>
+                <div class="elegant-card p-6 fade-in stagger-2">
+                    <h4 class="text-xl mb-3 title-bordeaux"><code>led_controller.c</code></h4>
+                    <p>Contrôle direct des <strong>LEDs</strong> connectées aux broches GPIO.</p>
+                </div>
+                <div class="elegant-card p-6 fade-in stagger-3">
+                    <h4 class="text-xl mb-3 title-bordeaux"><code>pattern_controller.c</code></h4>
+                    <p>Gestion des <strong>chenillards</strong> (séquences et état actif).</p>
+                </div>
+                <div class="elegant-card p-6 fade-in stagger-3">
+                    <h4 class="text-xl mb-3 title-bordeaux"><code>timer_handler.c</code></h4>
+                    <p>Configuration et gestion des <strong>timers</strong> pour les différentes fréquences/vitesses des chenillards.</p>
+                    <div class="mt-2 p-3 rounded-md" style="background-color: var(--primary-transparent);">
+                        <p class="text-sm mb-0"><strong>Timer</strong> : Un composant matériel du microcontrôleur agissant comme un chronomètre programmable. Utilisé ici pour déclencher périodiquement la mise à jour des chenillards.</p>
+                    </div>
+                </div>
+                <div class="elegant-card p-6 fade-in stagger-4">
+                    <h4 class="text-xl mb-3 title-bordeaux"><code>uart_handler.c</code></h4>
+                    <p>Gestion de la <strong>communication série UART</strong> (réception des commandes, envoi des réponses).</p>
+                </div>
+                <div class="elegant-card p-6 fade-in stagger-4">
+                    <h4 class="text-xl mb-3 title-bordeaux"><code>main.c</code> & Initialisation</h4>
+                    <p>Point d'entrée, configuration initiale (horloges, périphériques via <strong>HAL</strong>), et boucle principale.</p>
+                </div>
+            </div>
+            
+            <h3 class="text-2xl mb-4">Périphériques matériels utilisés</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="elegant-card p-6 fade-in stagger-5">
+                    <h4 class="text-xl mb-3 title-bordeaux">GPIO (Broches Entrée/Sortie)</h4>
+                    <p class="mb-3">Pour contrôler les 3 LEDs :</p>
+                    <ul class="list-disc pl-6 space-y-1">
+                        <li><strong>LED1</strong> : Broche PB0</li>
+                        <li><strong>LED2</strong> : Broche PB7</li>
+                        <li><strong>LED3</strong> : Broche PB14</li>
+                    </ul>
+                    <p class="mt-2 text-sm text-gray-400">(Configurées en sortie pour envoyer un signal électrique)</p>
+                </div>
+                <div class="elegant-card p-6 fade-in stagger-5">
+                    <h4 class="text-xl mb-3 title-bordeaux">Timers (Chronomètres)</h4>
+                    <p class="mb-3">Pour rythmer les chenillards :</p>
+                    <ul class="list-disc pl-6 space-y-1">
+                        <li><strong>TIM2</strong> : Intervalle de 500ms (rapide)</li>
+                        <li><strong>TIM3</strong> : Intervalle de 1s (moyen)</li>
+                        <li><strong>TIM4</strong> : Intervalle de 3s (lent)</li>
+                    </ul>
+                     <p class="mt-2 text-sm text-gray-400">(Génèrent une interruption à intervalle régulier)</p>
+                </div>
+                <div class="elegant-card p-6 fade-in stagger-5">
+                    <h4 class="text-xl mb-3 title-bordeaux">UART (Communication Série)</h4>
+                    <p class="mb-3">Pour dialoguer avec Linux :</p>
+                    <ul class="list-disc pl-6 space-y-1">
+                        <li>Périphérique <strong>USART3</strong> utilisé</li>
+                        <li>Vitesse (Baudrate) : <strong>115200</strong> bps</li>
+                        <li>Format : <strong>8N1</strong> (8 bits de données, pas de parité, 1 bit de stop)</li>
+                        <li>Utilisation des <strong>interruptions</strong> pour la réception/transmission</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3 class="text-2xl mb-4">Boucle principale (<code>main.c</code> sur STM32)</h3>
+            <p class="mb-4">
+                La boucle principale du microcontrôleur est relativement simple car la plupart des traitements sont déclenchés par interruptions.
+            </p>
+            
+            <pre class="mb-6 fade-in stagger-6">
+<code class="language-c">
+int main(void)
+{
+    // Initialisation du HAL et configuration de l'horloge système
+    HAL_Init();
+    SystemClock_Config();
+    
+    // Initialisation des périphériques matériels
+    MX_GPIO_Init();
+    MX_TIM2_Init();
+    MX_TIM3_Init();
+    MX_TIM4_Init();
+    MX_USART3_UART_Init();
+    
+    // Initialisation des modules logiciels
+    LED_Init();
+    PATTERN_Init();
+    TIMER_Init();
+    UART_Init();
+    COMMAND_Init();
+    
+    // Message de bienvenue et prompt initial
+    UART_SendString("\r\n\r\n--- Console Serie STM32F756ZG ---\r\n");
+    UART_SendString("Tapez HELP pour la liste des commandes.\r\n");
+    UART_SendString("STM32> ");
+    
+    // Boucle principale
+    while (1) {
+        COMMAND_Process();    // Traitement des commandes reçues
+        PATTERN_Process();    // Mise à jour des chenillards actifs
+    }
+}</code></pre>
+            
+            <h4 class="text-xl mb-3">Fonctionnement principal :</h4>
+            <ul class="list-disc pl-6 mb-4 space-y-2">
+                <li><span class="code-highlight">Initialisation Matérielle & HAL :</span> Configuration des horloges du microcontrôleur, puis des périphériques (GPIO, Timers, UART) via les fonctions `MX_..._Init()` souvent générées par l'outil STM32CubeMX et utilisant la couche <strong>HAL</strong>.</li>
+                <li><span class="code-highlight">Initialisation Logicielle :</span> Préparation des modules applicatifs (état initial des LEDs, etc.).</li>
+                <li><span class="code-highlight">Message de bienvenue :</span> Envoi d'un message sur le port série au démarrage.</li>
+                <li>
+                    <span class="code-highlight">Boucle principale :</span> Étonnamment simple ! Elle tourne en continu mais ne fait que deux choses :
+                    <ul class="list-circle pl-6 mt-1 space-y-1">
+                        <li><code>COMMAND_Process()</code> : Vérifie si une commande complète a été reçue (via interruptions UART) et la traite si oui.</li>
+                        <li><code>PATTERN_Process()</code> : Vérifie si un chenillard est actif et si son état doit être mis à jour (souvent déclenché par les interruptions des Timers).</li>
+                    </ul>
+                </li>
+                <li><span class="code-highlight">Architecture Événementielle :</span> Le 'vrai' travail se fait principalement en réaction à des événements externes (réception d'un caractère UART, fin de comptage d'un Timer) gérés par des routines d'<strong>interruption</strong>. La boucle principale assure juste la coordination.</li>
+            </ul>
+        </section>
+
+        <!-- Communication série -->
+        <section id="communication" class="mb-16 fade-in">
+            <h2 class="text-3xl md:text-4xl mb-8 section-title">
+                <span class="title-bordeaux">Communication série (Le Dialogue)</span>
+            </h2>
+            
+            <div class="definition-box mb-8 fade-in stagger-1">
+                <h4 class="text-lg"><i class="fas fa-comments mr-2"></i>Qu'est-ce que la communication série UART ?</h4>
+                <p>
+                    Imaginez deux personnes qui se parlent via un talkie-walkie très simple : c'est un peu ça, l'<strong>UART</strong>. C'est un protocole standard pour échanger des données (des octets, représentant des caractères ou des commandes) entre deux appareils, un bit après l'autre, sur un fil dédié pour l'émission (<strong>TX</strong>) et un autre pour la réception (<strong>RX</strong>). 
+                    C'est dit "asynchrone" car il n'y a pas de signal d'horloge partagé ; les deux appareils doivent juste être d'accord sur la **vitesse** (le baudrate) à laquelle ils envoient les bits. Les données sont envoyées dans des "trames" avec des marqueurs de début et de fin.
+                </p>
+            </div>
+            
+            <h3 class="text-2xl mb-4">Principe de fonctionnement dans notre projet</h3>
+            <p class="mb-6">
+                La communication est <strong>bidirectionnelle</strong> : Linux envoie des commandes, le STM32 répond.
+            </p>
+
+            <!-- Capture d'écran de l'application Linux -->
+            <div class="elegant-card p-6 mb-10 fade-in stagger-2 text-center">
+                <h4 class="text-xl mb-4 title-bordeaux">Application Linux en Action</h4>
+                <img src="2.png" alt="Capture d'écran de l'application console Linux affichant l'aide et des exemples de commandes envoyées au STM32 avec les réponses OK reçues." class="mx-auto my-4 rounded-md shadow-md" style="max-width: 75%; height: auto; border: 1px solid var(--border);">
+                <p class="mt-3 text-gray-300">
+                    La capture d'écran montre le lancement de l'application sous Linux, l'affichage de l'aide, et plusieurs commandes (<code>freq1</code>, <code>pat1</code>, <code>freq3</code>, <code>pat3</code>) envoyées au STM32, avec les réponses "OK" correspondantes reçues et affichées.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div class="elegant-card p-6 fade-in stagger-2">
+                    <h4 class="text-xl mb-3 title-bordeaux">Linux → STM32 (Commande)</h4>
+                    <ol class="list-decimal pl-6 space-y-1">
+                        <li>L'utilisateur saisit une commande</li>
+                        <li>La commande est validée localement</li>
+                        <li>Elle est envoyée via le port série</li>
+                        <li>Le microcontrôleur la reçoit par interruption</li>
+                        <li>La commande est analysée et exécutée</li>
+                    </ol>
+                </div>
+                <div class="elegant-card p-6 fade-in stagger-2">
+                    <h4 class="text-xl mb-3 title-bordeaux">STM32 → Linux (Réponse)</h4>
+                    <ol class="list-decimal pl-6 space-y-1">
+                        <li>Le microcontrôleur traite la commande</li>
+                        <li>Il génère une réponse (succès/erreur)</li>
+                        <li>La réponse est envoyée via l'UART</li>
+                        <li>L'application Linux la reçoit</li>
+                        <li>Le résultat est affiché à l'utilisateur</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <h3 class="text-2xl mb-4">Côté STM32 (<code>uart_handler.c</code> et Interruptions)</h3>
+            <p class="mb-4">
+                Sur le STM32, la réception est gérée par <strong>interruption</strong>. Dès qu'un caractère arrive sur la ligne RX de l'USART3, le processeur met en pause ce qu'il fait, exécute une fonction spéciale (le "callback"), puis reprend son travail. C'est très efficace.
+            </p>
+            
+            <pre class="mb-6 fade-in stagger-3">
+<code class="language-c">
+/* Ceci est un "callback" : une fonction que le système (HAL) appelle 
+ * automatiquement quand un événement spécifique se produit. 
+ * Ici, l'événement est "réception UART terminée" (même pour 1 seul caractère). */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    // On vérifie que l'interruption vient bien de l'USART3 (on pourrait en avoir d'autres)
+    if (huart->Instance != USART3) {
+        return;
+    }
+    
+    // Lecture du caractère reçu (stocké temporairement par la HAL)
+    // (Note: le code original utilisait rxBuffer[rxIndex], s'assurer que c'est bien géré)
+    char receivedChar = huart->Instance->RDR; // Lecture directe du registre de données reçu
+    
+    // // Gestion buffer (si on utilise un buffer intermédiaire)
+    // if (rxIndex >= UART_BUFFER_SIZE - 1) { ... } else { rxIndex++; }
+    
+    // On transmet le caractère reçu au module qui analyse les commandes
+    Command_Parser_ProcessChar(receivedChar);
+    
+    // IMPORTANT : On relance immédiatement une écoute pour le *prochain* caractère.
+    // La réception par interruption doit être réarmée après chaque caractère reçu.
+    HAL_UART_Receive_IT(huart, &rxBuffer, 1); // Adapter selon la stratégie de bufferisation
+}</code></pre>
+            
+            <h4 class="text-xl mb-3">Fonctionnement de la réception (STM32) :</h4>
+            <ul class="list-disc pl-6 mb-10 space-y-2">
+                <li><span class="code-highlight">Déclenché par Interruption :</span> La fonction <code>HAL_UART_RxCpltCallback</code> est appelée automatiquement par la couche HAL dès qu'un caractère est reçu sur l'USART3.</li>
+                <li><span class="code-highlight">Traitement Caractère par Caractère :</span> Le caractère reçu est immédiatement passé au module <code>Command_Parser</code> qui va l'accumuler et tenter de reconnaître une commande complète (souvent terminée par `
+`).</li>
+                <li><span class="code-highlight">Réarmement de l'Interruption :</span> Crucial ! Il faut redemander à la HAL d'écouter pour le prochain caractère (`HAL_UART_Receive_IT`). Sans cela, on ne recevrait que le premier caractère.</li>
+                <li><span class="code-highlight">Efficacité :</span> Le CPU ne perd pas de temps à attendre les caractères ; il est prévenu quand ils arrivent.</li>
+            </ul>
+            
+            <h3 class="text-2xl mb-4">Côté Linux (<code>serial_handler.c</code> et <code>select()</code>)</h3>
+            <p class="mb-6">
+                Côté Linux, on utilise une approche différente (pas d'interruptions directes comme sur le STM32). On utilise <code>select()</code> pour vérifier périodiquement s'il y a des données à lire sans bloquer tout le programme.
+            </p>
+            
+            <h4 class="text-xl mb-3">Caractéristiques principales (Linux) :</h4>
+            <ul class="list-disc pl-6 mb-6 space-y-2">
+                <li><span class="code-highlight">Configuration du Port Série :</span> Ouverture du fichier spécial (`/dev/ttyACM0`) et configuration précise (vitesse, format 8N1, etc.).</li>
+                <li><span class="code-highlight">Lecture Non Bloquante avec <code>select()</code> :</span> La fonction <code>select()</code> permet de "demander" au système s'il y a des données disponibles sur le port série (ou d'autres sources) sans mettre en pause le programme. On lui donne un petit délai (timeout). S'il y a des données avant la fin du délai, <code>select()</code> nous le dit et on peut lire. Si le délai expire sans données, on sait que le STM32 a probablement fini de parler pour le moment.</li>
+                <li><span class="code-highlight">Assemblage de la Réponse :</span> On lit les caractères/morceaux de réponse tant qu'ils arrivent (détectés par <code>select()</code>) jusqu'au timeout.</li>
+                <li><span class="code-highlight">Nettoyage et Robustesse :</span> Gestion des erreurs possibles et nettoyage des caractères de fin de ligne.</li>
+            </ul>
+            
+            <div class="definition-box mb-4 fade-in stagger-4">
+                <h4 class="text-lg"><i class="fas fa-vial mr-2"></i>Méthode de test et validation</h4>
+                <p class="mb-3">
+                    Pour tester et valider la communication série, nous avons mis en place plusieurs procédures :
+                </p>
+                <ul class="list-disc pl-6 space-y-1">
+                    <li>Vérification de la transmission avec des outils comme minicom et screen</li>
+                    <li>Tests de robustesse avec des commandes malformées ou incomplètes</li>
+                    <li>Analyse temporelle des réponses avec un oscilloscope pour valider le baudrate</li>
+                    <li>Tests de charge avec des transmissions rapides et successives</li>
+                    <li>Mise en place de mécanismes de détection d'erreurs (CRC, débordement de buffer)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Les chenillards -->
+        <section id="chenillards" class="mb-16 fade-in">
+            <h2 class="text-3xl md:text-4xl mb-8 section-title">
+                <span class="title-bordeaux">Les chenillards</span>
+            </h2>
+            
+            <div class="definition-box mb-8 fade-in stagger-1">
+                <h4 class="text-lg">Qu'est-ce qu'un chenillard ?</h4>
+                <p>
+                    Un chenillard est un effet lumineux qui consiste à allumer et éteindre successivement une série de LED 
+                    selon un motif prédéfini. Cette animation lumineuse donne l'impression d'un mouvement, 
+                    comme celui d'une chenille qui avance, d'où son nom. Les chenillards sont couramment utilisés 
+                    dans la signalisation, les décorations lumineuses ou comme indicateurs visuels dans les systèmes électroniques.
+                </p>
+            </div>
+            
+            <p class="mb-6">
+                Dans ce projet, trois types de chenillard ont été implémentés, chacun avec sa propre séquence d'allumage. 
+                Les chenillards peuvent fonctionner à différentes fréquences (vitesses) contrôlées par les timers du microcontrôleur.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="elegant-card p-6 fade-in stagger-2">
+                    <h3 class="text-xl mb-3 title-bordeaux">Chenillard 1 : Séquentiel</h3>
+                    <p class="mb-4">Allumage séquentiel des LED de gauche à droite, une seule LED allumée à la fois.</p>
+                    
+                    <div class="flex justify-center mb-4">
+                        <div id="chenillard1-led1" class="led"></div>
+                        <div id="chenillard1-led2" class="led"></div>
+                        <div id="chenillard1-led3" class="led"></div>
+                    </div>
+                    
+                    <pre class="text-sm">
+<code class="language-c">
+static void Pattern1_Update(void) {
+    // Extinction de toutes les LED
+    for (uint8_t i = 1; i <= LED_COUNT; i++) {
+        LED_ForceState(i, LED_OFF);
+    }
+    
+    // Allumage de la LED correspondant à l'étape
+    LED_ForceState(patternStep + 1, LED_ON);
+    
+    // Passage à l'étape suivante
+    patternStep = (patternStep + 1) % LED_COUNT;
+}</code></pre>
+                </div>
+                
+                <div class="elegant-card p-6 fade-in stagger-3">
+                    <h3 class="text-xl mb-3 title-bordeaux">Chenillard 2 : Alternance</h3>
+                    <p class="mb-4">Alternance entre LED paires et impaires.</p>
+                    
+                    <div class="flex justify-center mb-4">
+                        <div id="chenillard2-led1" class="led"></div>
+                        <div id="chenillard2-led2" class="led"></div>
+                        <div id="chenillard2-led3" class="led"></div>
+                    </div>
+                    
+                    <pre class="text-sm">
+<code class="language-c">
+static void Pattern2_Update(void) {
+    // Alternance entre LED paires et impaires
+    if (patternStep == 0) {
+        // Étape 0 : LED impaires allumées
+        LED_ForceState(1, LED_ON);
+        LED_ForceState(2, LED_OFF);
+        LED_ForceState(3, LED_ON);
+    } else {
+        // Étape 1 : LED paires allumées
+        LED_ForceState(1, LED_OFF);
+        LED_ForceState(2, LED_ON);
+        LED_ForceState(3, LED_OFF);
+    }
+    
+    // Passage à l'étape suivante
+    patternStep = (patternStep + 1) % 2;
+}</code></pre>
+                </div>
+                
+                <div class="elegant-card p-6 fade-in stagger-4">
+                    <h3 class="text-xl mb-3 title-bordeaux">Chenillard 3 : Chenille avec retour</h3>
+                    <p class="mb-4">Allumage progressif puis extinction progressive, simulant un mouvement de chenille avec retour.</p>
+                    
+                    <div class="flex justify-center mb-4">
+                        <div id="chenillard3-led1" class="led"></div>
+                        <div id="chenillard3-led2" class="led"></div>
+                        <div id="chenillard3-led3" class="led"></div>
+                    </div>
+                    
+                    <pre class="text-sm">
+<code class="language-c">
+static void Pattern3_Update(void) {
+    // Extinction de toutes les LED
+    for (uint8_t i = 1; i <= LED_COUNT; i++) {
+        LED_ForceState(i, LED_OFF);
+    }
+    
+    // Configuration selon l'étape actuelle
+    switch (patternStep) {
+        case 0:
+            LED_ForceState(1, LED_ON);
+            break;
+        case 1:
+            LED_ForceState(1, LED_ON);
+            LED_ForceState(2, LED_ON);
+            break;
+        case 2:
+            LED_ForceState(1, LED_ON);
+            LED_ForceState(2, LED_ON);
+            LED_ForceState(3, LED_ON);
+            break;
+        case 3:
+            LED_ForceState(2, LED_ON);
+            LED_ForceState(3, LED_ON);
+            break;
+        case 4:
+            LED_ForceState(3, LED_ON);
+            break;
+        default:
+            break;
+    }
+    
+    // Passage à l'étape suivante
+    patternStep = (patternStep + 1) % 6;
+}</code></pre>
+                </div>
+            </div>
+            
+            <h3 class="text-2xl mb-4">Gestion des fréquences</h3>
+            <p class="mb-6">
+                Chaque chenillard peut fonctionner à trois fréquences différentes, contrôlées par des timers :
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="elegant-card p-6 text-center fade-in stagger-5">
+                    <h4 class="text-xl mb-3 title-bordeaux">500ms (TIM2)</h4>
+                    <p class="mb-4">Changement rapide</p>
+                    <div>
+                        <button id="freq1" class="btn btn-primary">Simuler</button>
+                    </div>
+                </div>
+                <div class="elegant-card p-6 text-center fade-in stagger-5">
+                    <h4 class="text-xl mb-3 title-bordeaux">1s (TIM3)</h4>
+                    <p class="mb-4">Changement moyen</p>
+                    <div>
+                        <button id="freq2" class="btn btn-primary">Simuler</button>
+                    </div>
+                </div>
+                <div class="elegant-card p-6 text-center fade-in stagger-5">
+                    <h4 class="text-xl mb-3 title-bordeaux">3s (TIM4)</h4>
+                    <p class="mb-4">Changement lent</p>
+                    <div>
+                        <button id="freq3" class="btn btn-primary">Simuler</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="elegant-card p-6 mb-4 fade-in stagger-6">
+                <h4 class="text-xl mb-3 title-bordeaux">Calcul des périodes des timers</h4>
+                <p class="mb-3">
+                    Pour obtenir les intervalles de temps souhaités (500ms, 1s, 3s), il faut configurer le **Prescaler** (diviseur de fréquence) et la **Period** (valeur de comptage) de chaque timer. 
+                    Les valeurs exactes dépendent de la fréquence d'horloge fournie au timer. 
+                    <strong>Hypothèse :</strong> Les calculs suivants supposent une horloge de timer de <strong>16 MHz</strong> (cela peut varier selon la configuration de `SystemClock_Config()` dans votre projet STM32 réel - vérifiez l'horloge APB1/APB2 pour TIM2/3/4).
+                </p>
+                <ul class="list-disc pl-6 space-y-3">
+                    <li><span class="code-highlight">TIM2 (Objectif 500ms) :</span> Prescaler = 1599, Period = 4999
+                        <ul class="list-circle pl-6 mt-1 space-y-1">
+                            <li>Fréquence après prescaler : 16 MHz / (1599 + 1) = 10 kHz (Période = 0.1 ms)</li>
+                            <li>Durée totale : (4999 + 1) * 0.1 ms = 5000 * 0.1 ms = 500 ms</li>
+                        </ul>
+                    </li>
+                    <li><span class="code-highlight">TIM3 (Objectif 1s) :</span> Prescaler = 1599, Period = 9999
+                        <ul class="list-circle pl-6 mt-1 space-y-1">
+                            <li>Fréquence après prescaler : 16 MHz / 1600 = 10 kHz</li>
+                            <li>Durée totale : (9999 + 1) * 0.1 ms = 10000 * 0.1 ms = 1000 ms = 1 s</li>
+                        </ul>
+                    </li>
+                    <li><span class="code-highlight">TIM4 (Objectif 3s) :</span> Prescaler = 1599, Period = 29999
+                        <ul class="list-circle pl-6 mt-1 space-y-1">
+                            <li>Fréquence après prescaler : 16 MHz / 1600 = 10 kHz</li>
+                            <li>Durée totale : (29999 + 1) * 0.1 ms = 30000 * 0.1 ms = 3000 ms = 3 s</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p class="mt-3 text-sm text-gray-400">
+                    <strong>Note :</strong> Le prescaler et la période sont comptés à partir de 0, d'où le "+1" dans les calculs de fréquence et de durée.
+                </p>
+            </div>
+        </section>
+
+        <!-- Liste des commandes -->
+        <section id="commandes" class="mb-16 fade-in">
+            <h2 class="text-3xl md:text-4xl mb-8 section-title">
+                <span class="title-bordeaux">Liste des commandes</span>
+            </h2>
+            
+            <h3 class="text-2xl mb-4">Commandes de contrôle des LED</h3>
+            <div class="table-container fade-in stagger-1">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Commande</th>
+                            <th>Description</th>
+                            <th>Exemple</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>LED&lt;n&gt; ON</code></td>
+                            <td>Allume la LED spécifiée</td>
+                            <td><code>LED1 ON</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>LED&lt;n&gt; OFF</code></td>
+                            <td>Éteint la LED spécifiée</td>
+                            <td><code>LED2 OFF</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3 class="text-2xl mt-8 mb-4">Commandes de chenillard</h3>
+            <div class="table-container fade-in stagger-2">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Commande</th>
+                            <th>Description</th>
+                            <th>Exemple</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>CHENILLARD&lt;n&gt; ON</code></td>
+                            <td>Active le chenillard spécifié</td>
+                            <td><code>CHENILLARD1 ON</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>PAT&lt;n&gt;</code></td>
+                            <td>Raccourci pour activer un chenillard</td>
+                            <td><code>PAT2</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>CHENILLARD FREQUENCE&lt;n&gt;</code></td>
+                            <td>Change la fréquence du chenillard</td>
+                            <td><code>CHENILLARD FREQUENCE2</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>FREQ&lt;n&gt;</code></td>
+                            <td>Raccourci pour changer la fréquence</td>
+                            <td><code>FREQ3</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>STOP</code></td>
+                            <td>Arrête le chenillard actif</td>
+                            <td><code>STOP</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3 class="text-2xl mt-8 mb-4">Commandes d'information</h3>
+            <div class="table-container fade-in stagger-3">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Commande</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>STATUS</code></td>
+                            <td>Affiche l'état des LED, du chenillard et de la fréquence</td>
+                        </tr>
+                        <tr>
+                            <td><code>HELP</code></td>
+                            <td>Affiche la liste des commandes disponibles</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3 class="text-2xl mt-8 mb-4">Commandes spéciales (Linux uniquement)</h3>
+            <div class="table-container fade-in stagger-4">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Commande</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>CLEAR</code></td>
+                            <td>Efface l'écran du terminal</td>
+                        </tr>
+                        <tr>
+                            <td><code>QUIT</code></td>
+                            <td>Quitte l'application</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Module LED -->
+        <section id="module-led" class="mb-16 fade-in">
+            <h2 class="text-3xl md:text-4xl mb-8 section-title">
+                <span class="title-bordeaux">Module LED</span>
+            </h2>
+            
+            <h3 class="text-2xl mb-4">Présentation du module</h3>
+            <p class="mb-6">
+                Le module LED (<code>led_controller.c</code>) est responsable du contrôle des LED connectées aux broches GPIO du microcontrôleur. 
+                Il fournit des fonctions pour allumer, éteindre et vérifier l'état des LED.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div class="elegant-card p-6 fade-in stagger-1">
+                    <h4 class="text-xl mb-3 title-bordeaux">Configuration matérielle</h4>
+                    <ul class="list-disc pl-6 space-y-1">
+                        <li>LED1 connectée à PB0</li>
+                        <li>LED2 connectée à PB7</li>
+                        <li>LED3 connectée à PB14</li>
+                        <li>Toutes configurées en sortie push-pull</li>
+                        <li>Fréquence faible pour économiser l'énergie</li>
+                    </ul>
+                </div>
+                <div class="elegant-card p-6 fade-in stagger-1">
+                    <h4 class="text-xl mb-3 title-bordeaux">États possibles</h4>
+                    <ul class="list-disc pl-6 space-y-1">
+                        <li><code>LED_ON</code> : LED allumée (1)</li>
+                        <li><code>LED_OFF</code> : LED éteinte (0)</li>
+                        <li><code>LED_ERROR</code> : Valeur d'erreur (2)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3 class="text-2xl mb-4">Fonctions principales</h3>
+            <pre class="mb-6 fade-in stagger-2">
+<code class="language-c">
+bool LED_SetState(uint8_t ledNumber, LED_State state)
+{
+    // Vérification de la validité du numéro de LED
+    if (!LED_IsValidNumber(ledNumber)) {
+        return false;
+    }
+    
+    // Vérification qu'aucun chenillard n'est actif
+    if (Pattern_IsActive()) {
+        return false;
+    }
+    
+    // Conversion du numéro de LED en broche GPIO
+    uint16_t pin = LED_NumberToPin(ledNumber);
+    if (pin == 0) {
+        return false;
+    }
+    
+    // Modification de l'état de la LED
+    HAL_GPIO_WritePin(LED_PORT, pin, (state == LED_ON) ? GPIO_PIN_SET : GPIO_PIN_RESET);
+    return true;
+}</code></pre>
+            
+            <h4 class="text-xl mb-3">Analyse de la fonction LED_SetState :</h4>
+            <ul class="list-disc pl-6 mb-10 space-y-2">
+                <li><span class="code-highlight">Vérifications de sécurité :</span> Deux niveaux de vérification sont effectués :
+                    <ul class="list-circle pl-6 mt-1 space-y-1">
+                        <li>Validité du numéro de LED (entre 1 et 3)</li>
+                        <li>Absence de chenillard actif (qui prendrait le contrôle des LED)</li>
+                    </ul>
+                </li>
+                <li><span class="code-highlight">Conversion numéro → pin :</span> Utilisation d'une fonction dédiée pour la correspondance entre numéro logique et pin physique.</li>
+                <li><span class="code-highlight">Contrôle du GPIO :</span> Utilisation de l'API HAL pour modifier l'état du pin.</li>
+                <li><span class="code-highlight">Retour d'état :</span> Indication du succès ou de l'échec de l'opération.</li>
+            </ul>
+            
+            <pre class="mb-6 fade-in stagger-3">
+<code class="language-c">
+void LED_ForceState(uint8_t ledNumber, LED_State state)
+{
+    // Vérification de la validité du numéro de LED
+    if (!LED_IsValidNumber(ledNumber)) {
+        return; 
+    }
+    
+    // Conversion du numéro de LED en broche GPIO
+    uint16_t pin = LED_NumberToPin(ledNumber);
+    if (pin == 0) {
+        return; 
+    }
+    
+    // Modification de l'état de la LED (sans vérifier le chenillard)
+    HAL_GPIO_WritePin(LED_PORT, pin, (state == LED_ON) ? GPIO_PIN_SET : GPIO_PIN_RESET);
+}</code></pre>
+            
+            <h4 class="text-xl mb-3">Différences clés entre LED_SetState et LED_ForceState :</h4>
+            <ul class="list-disc pl-6 mb-4 space-y-2">
+                <li><span class="code-highlight">Usage :</span> <code>LED_ForceState</code> est utilisée par le module Pattern pour contrôler les LED pendant l'exécution d'un chenillard.</li>
+                <li><span class="code-highlight">Absence de vérification du chenillard :</span> Ne vérifie pas si un chenillard est actif.</li>
+                <li><span class="code-highlight">Pas de retour d'état :</span> Fonction de type <code>void</code>, ne retourne pas de valeur.</li>
+                <li><span class="code-highlight">Responsabilité :</span> L'appelant est responsable de s'assurer que l'opération est autorisée.</li>
+            </ul>
+        </section>
+
+        <!-- Conclusion -->
+        <section id="conclusion" class="mb-16 fade-in">
+            <h2 class="text-3xl md:text-4xl mb-8 section-title">
+                <span class="title-bordeaux">Conclusion</span>
+            </h2>
+            
+            <div class="elegant-card p-6 fade-in stagger-1">
+                <p class="mb-4">
+                    Ce projet de rétro-conception nous a permis de décortiquer et de maîtriser la communication série entre un environnement Linux et un microcontrôleur STM32F756ZG. 
+                    En partant d'une analyse fonctionnelle, nous avons réussi à implémenter une application de contrôle robuste côté Linux et un firmware réactif sur le STM32, capable de gérer les LEDs individuellement ainsi que des séquences lumineuses complexes (chenillards) à différentes vitesses.
+                </p>
+                <p class="mb-4">
+                    L'utilisation combinée des périphériques matériels (GPIO, UART, Timers) et des techniques logicielles appropriées (interruptions, validation de commandes, architecture modulaire) a été essentielle pour atteindre les objectifs fixés. 
+                    La démarche de rétro-conception, bien que parfois exigeante, s'est avérée très formatrice, nous offrant une compréhension approfondie des interactions bas niveau entre matériel et logiciel.
+                </p>
+                <p>
+                    Les compétences acquises dans la manipulation des outils de développement embarqué (HAL, CubeMX), la programmation C, et la gestion de la communication série constituent une base solide pour de futurs projets impliquant des systèmes embarqués et l'Internet des Objets (IoT).
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-8 mt-16" style="background-color: var(--background-dark);">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-lg">© 2025 Projet de Rétro-conception - Manus</p>
+            <p class="mt-2 text-sm text-gray-400">Documentation technique interactive pour le projet de communication STM32 ↔ Linux</p>
+        </div>
+    </footer>
+
+    <!-- Bouton retour en haut de page -->
+    <button id="back-to-top" class="back-to-top" aria-label="Retour en haut de la page">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variables pour les chenillards
+            const chenillard1Elements = [
+                document.getElementById('chenillard1-led1'),
+                document.getElementById('chenillard1-led2'),
+                document.getElementById('chenillard1-led3')
+            ];
+            
+            const chenillard2Elements = [
+                document.getElementById('chenillard2-led1'),
+                document.getElementById('chenillard2-led2'),
+                document.getElementById('chenillard2-led3')
+            ];
+            
+            const chenillard3Elements = [
+                document.getElementById('chenillard3-led1'),
+                document.getElementById('chenillard3-led2'),
+                document.getElementById('chenillard3-led3')
+            ];
+            
+            // Configurer les animations des chenillards
+            function initChenillards() {
+                // Chenillard 1 - Séquentiel
+                chenillard1Elements[0].style.animation = 'chenillard1 3s infinite';
+                chenillard1Elements[0].style.animationDelay = '0s';
+                
+                chenillard1Elements[1].style.animation = 'chenillard1 3s infinite';
+                chenillard1Elements[1].style.animationDelay = '1s';
+                
+                chenillard1Elements[2].style.animation = 'chenillard1 3s infinite';
+                chenillard1Elements[2].style.animationDelay = '2s';
+                
+                // Chenillard 2 - Alternance
+                chenillard2Elements[0].style.animation = 'chenillard2-odd 2s infinite';
+                chenillard2Elements[1].style.animation = 'chenillard2-even 2s infinite';
+                chenillard2Elements[2].style.animation = 'chenillard2-odd 2s infinite';
+                
+                // Chenillard 3 - Chenille avec retour
+                chenillard3Elements[0].style.animation = 'chenillard3-led1 6s infinite';
+                chenillard3Elements[1].style.animation = 'chenillard3-led2 6s infinite';
+                chenillard3Elements[2].style.animation = 'chenillard3-led3 6s infinite';
+            }
+            
+            // Initialiser les chenillards
+            initChenillards();
+            
+            // Boutons de fréquences
+            const freq1Button = document.getElementById('freq1');
+            const freq2Button = document.getElementById('freq2');
+            const freq3Button = document.getElementById('freq3');
+            
+            // Regrouper toutes les LEDs des simulations
+            const allSimulatedLeds = [
+                ...chenillard1Elements,
+                ...chenillard2Elements,
+                ...chenillard3Elements
+            ];
+
+            function updateAnimationSpeed(speedInSeconds) {
+                const durationString = `${speedInSeconds}s`;
+                console.log(`Updating animation duration to: ${durationString}`);
+
+                // Appliquer la nouvelle durée à toutes les LEDs simulées
+                // Note: Cela suppose que les animations CSS sont conçues pour s'adapter à un changement de durée global.
+                // Pour des animations complexes, il faudrait ajuster les délais (@keyframe percentages) ou avoir des classes dédiées.
+                // Ici, ça semble fonctionner car chaque LED a sa propre animation ou une animation simple.
+
+                // Spécifique pour Chenillard 1 (base 3s cycle)
+                chenillard1Elements.forEach(led => led.style.animationDuration = `${speedInSeconds * 3}s`);
+                // Spécifique pour Chenillard 2 (base 2s cycle)
+                chenillard2Elements.forEach(led => led.style.animationDuration = `${speedInSeconds * 2}s`);
+                // Spécifique pour Chenillard 3 (base 6s cycle)
+                chenillard3Elements.forEach(led => led.style.animationDuration = `${speedInSeconds * 6}s`);
+            }
+
+            freq1Button.addEventListener('click', () => {
+                updateAnimationSpeed(0.5); // Nouvelle durée de base pour un cycle
+                
+                // Mettre en évidence le bouton actif
+                [freq1Button, freq2Button, freq3Button].forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                freq1Button.classList.add('active');
+            });
+            
+            freq2Button.addEventListener('click', () => {
+                updateAnimationSpeed(1.0); // Nouvelle durée de base pour un cycle
+                
+                // Mettre en évidence le bouton actif
+                [freq1Button, freq2Button, freq3Button].forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                freq2Button.classList.add('active');
+            });
+            
+            freq3Button.addEventListener('click', () => {
+                updateAnimationSpeed(3.0); // Nouvelle durée de base pour un cycle
+                
+                // Mettre en évidence le bouton actif
+                [freq1Button, freq2Button, freq3Button].forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                freq3Button.classList.add('active');
+            });
+            
+            // Gestion des liens de navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+            
+            function setActiveNavItem() {
+                let index = sections.length;
+                
+                while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
+                
+                navLinks.forEach(link => link.classList.remove('active'));
+                
+                if (navLinks[index]) {
+                    navLinks[index].classList.add('active');
+                }
+            }
+            
+            window.addEventListener('scroll', setActiveNavItem);
+            setActiveNavItem();
+            
+            // Bouton de retour en haut
+            const backToTopButton = document.getElementById('back-to-top');
+            
+            function toggleBackToTopButton() {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            }
+            
+            window.addEventListener('scroll', toggleBackToTopButton);
+            toggleBackToTopButton();
+            
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Animation des éléments au défilement
+            const fadeElements = document.querySelectorAll('.fade-in:not(.stagger-1):not(.stagger-2):not(.stagger-3):not(.stagger-4):not(.stagger-5):not(.stagger-6):not(.stagger-7)');
+            
+            function checkFade() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight * 0.9) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', checkFade);
+            checkFade(); // Vérification initiale
+            
+            // Animation des éléments décalés
+            const staggerElements = document.querySelectorAll('.stagger-1, .stagger-2, .stagger-3, .stagger-4, .stagger-5, .stagger-6, .stagger-7');
+            
+            function checkStaggerFade() {
+                staggerElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight * 0.9) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', checkStaggerFade);
+            checkStaggerFade(); // Vérification initiale
+        });
+    </script>
+    <!-- Prism.js JS (Core + Autoloader) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script>
+        // Ensure Prism highlights code after DOM load & potential script execution
+        document.addEventListener('DOMContentLoaded', (event) => {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>
